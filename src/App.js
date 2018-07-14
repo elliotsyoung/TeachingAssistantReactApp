@@ -32,6 +32,10 @@ class App extends Component
       this.setState(
       {
         messages: updatedMessages
+      }, () =>
+      {
+        var ChatBox = document.getElementById("chat-messages-box");
+        ChatBox.scrollTop = ChatBox.scrollHeight;
       })
     })
 
@@ -40,17 +44,12 @@ class App extends Component
   sendChat(event)
   {
     event.preventDefault();
-    const updatedMessages = this.state.messages.slice();
-    updatedMessages.push(this.state.inputText);
 
     socket.emit("pi room chat message", this.state.inputText);
     this.setState(
     {
-      messages: updatedMessages,
       inputText: ""
     })
-    var ChatBox = document.getElementById("chat-messages-box");
-    ChatBox.scrollTop = ChatBox.scrollHeight;
   }
   handleChatInputChange(event)
   {
