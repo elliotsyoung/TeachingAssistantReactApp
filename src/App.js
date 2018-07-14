@@ -5,6 +5,8 @@ import React,
 from 'react';
 import './App.css';
 import ChatComponent from './components/ChatComponent.js';
+import openSocket from 'socket.io-client';
+const socket = openSocket('https://fusionpaloalto.elliotsyoung.com');
 class App extends Component
 {
   constructor(props)
@@ -17,6 +19,23 @@ class App extends Component
       messages: ["Hello There", "Welcome to the app!", "this is the third message"],
       inputText: ""
     }
+
+    // Socket Setup
+    socket.emit("subscribe",
+    {
+      room: "pi-client"
+    });
+    socket.on("pi room chat message", (message) =>
+    {
+      const updatedMessages = this.state.messages.slice();
+      updatedMessages.push(message);
+      this.setState(
+      {
+        messages: updatedMessages
+      })
+    })
+
+
   }
   sendChat(event)
   {
@@ -24,6 +43,7 @@ class App extends Component
     const updatedMessages = this.state.messages.slice();
     updatedMessages.push(this.state.inputText);
 
+    socket.emit("pi room chat message", this.state.inputText);
     this.setState(
     {
       messages: updatedMessages,
