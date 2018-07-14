@@ -6,9 +6,17 @@ from "react";
 
 class ChatComponent extends Component
 {
-  constructor()
+  constructor(props)
   {
-    super()
+    super(props);
+    console.log(props);
+  }
+  renderMessages()
+  {
+    return this.props.messages.map((message, key) =>
+    {
+      return <li key={key}>{message}</li>
+    })
   }
   render()
   {
@@ -16,22 +24,13 @@ class ChatComponent extends Component
       <div className="chat-wrapper">
         <div className="chat-messages-box">
           <ul className="chat-messages-box-list">
-            <li>test 1</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque eos at saepe omnis, in. Quis, obcaecati, aperiam adipisci sed totam tenetur exercitationem cupiditate, expedita minus dolores vero alias ea deleniti.</li>
-            <li>tstes</li>
-            <li>test 1</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque eos at saepe omnis, in. Quis, obcaecati, aperiam adipisci sed totam tenetur exercitationem cupiditate, expedita minus dolores vero alias ea deleniti.</li>
-            <li>tstes</li>
-            <li>tstes</li>
-            <li>test 1</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque eos at saepe omnis, in. Quis, obcaecati, aperiam adipisci sed totam tenetur exercitationem cupiditate, expedita minus dolores vero alias ea deleniti.</li>
-            <li>tstes</li>
+            {this.renderMessages()}
           </ul>
         </div>
-        <div className="chat-input-box">
-          <textarea id="chat-text-input" ></textarea>
-          <button className="btn btn-md">send</button>
-        </div>
+          <form className="chat-input-box" onSubmit={this.props.sendChat}>
+            <input value={this.props.inputText} onChange={this.props.handleChatInputChange} type="text" id="chat-text-input" name="inputText"/>
+            <button type="submit" onClick={this.props.sendChat} className="btn btn-md">send</button>
+          </form>
       </div>
     )
   }

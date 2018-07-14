@@ -4,16 +4,38 @@ import React,
 }
 from 'react';
 import './App.css';
-import ChatBox from './components/ChatComponent.js';
+import ChatComponent from './components/ChatComponent.js';
 class App extends Component
 {
-  constructor()
+  constructor(props)
   {
-    super()
+    super(props)
     console.log("Hello World!");
+    this.sendChat = this.sendChat.bind(this);
+    this.handleChatInputChange = this.handleChatInputChange.bind(this);
     this.state = {
-      test_array: []
+      messages: ["Hello There", "Welcome to the app!", "this is the third message"],
+      inputText: ""
     }
+  }
+  sendChat(event)
+  {
+    event.preventDefault();
+    const updatedMessages = this.state.messages.slice();
+    updatedMessages.push(this.state.inputText);
+
+    this.setState(
+    {
+      messages: updatedMessages,
+      inputText: ""
+    })
+  }
+  handleChatInputChange(event)
+  {
+    this.setState(
+    {
+      [event.target.name]: event.target.value
+    })
   }
   render()
   {
@@ -25,7 +47,7 @@ class App extends Component
       <p className="App-intro">
         Todo: integrate socket io into project
       </p>
-      <ChatBox/>
+      <ChatComponent inputText={this.state.inputText} handleChatInputChange={this.handleChatInputChange} sendChat={this.sendChat} messages={this.state.messages} />
 
     </div>);
   }
