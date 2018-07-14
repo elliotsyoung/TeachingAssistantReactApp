@@ -29,6 +29,8 @@ class App extends Component
       messages: updatedMessages,
       inputText: ""
     })
+    var ChatBox = document.getElementById("chat-messages-box");
+    ChatBox.scrollTop = ChatBox.scrollHeight;
   }
   handleChatInputChange(event)
   {

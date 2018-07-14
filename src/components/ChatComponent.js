@@ -22,13 +22,13 @@ class ChatComponent extends Component
   {
     return (
       <div className="chat-wrapper">
-        <div className="chat-messages-box">
+        <div id="chat-messages-box" className="chat-messages-box">
           <ul className="chat-messages-box-list">
             {this.renderMessages()}
           </ul>
         </div>
           <form className="chat-input-box" onSubmit={this.props.sendChat}>
-            <input value={this.props.inputText} onChange={this.props.handleChatInputChange} type="text" id="chat-text-input" name="inputText"/>
+            <input value={this.props.inputText} onChange={this.props.handleChatInputChange} type="text" id="chat-text-input" name="inputText" autoComplete="off"/>
             <button type="submit" onClick={this.props.sendChat} className="btn btn-md">send</button>
           </form>
       </div>
