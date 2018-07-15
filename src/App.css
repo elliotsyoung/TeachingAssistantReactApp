@@ -27,7 +27,8 @@
   /* background-color: yellow; */
   vertical-align: bottom;
   border-radius: 5px;
-  border: 1px solid gray;
+  border: 10px solid black;
+  padding: 20px;
 }
 
 .chat-input-box{
@@ -64,7 +65,7 @@
   padding-left: 0px;
   padding-top: 0px;
   margin-top: 0px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .chat-messages-box-list li {

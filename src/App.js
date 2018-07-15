@@ -6,6 +6,11 @@ from 'react';
 import './App.css';
 import ChatComponent from './components/ChatComponent.js';
 import openSocket from 'socket.io-client';
+import Draggable,
+{
+  DraggableCore
+}
+from 'react-draggable'; // Both at the same time
 const socket = openSocket('https://fusionpaloalto.elliotsyoung.com');
 class App extends Component
 {
@@ -15,9 +20,13 @@ class App extends Component
     console.log("Hello World!");
     this.sendChat = this.sendChat.bind(this);
     this.handleChatInputChange = this.handleChatInputChange.bind(this);
+    this.onStart = this.onStart.bind(this)
+    this.onStop = this.onStop.bind(this)
+
     this.state = {
       messages: ["Hello There", "Welcome to the app!", "this is the third message"],
-      inputText: ""
+      inputText: "",
+      activeDrags: 0
     }
 
     // Socket Setup
@@ -53,13 +62,36 @@ class App extends Component
   }
   handleChatInputChange(event)
   {
+    console.log("text changed");
     this.setState(
     {
       [event.target.name]: event.target.value
     })
   }
+
+  // DRAG HANDLERS
+  onStart()
+  {
+    this.setState(
+    {
+      activeDrags: ++this.state.activeDrags
+    });
+  }
+
+  onStop()
+  {
+    this.setState(
+    {
+      activeDrags: --this.state.activeDrags
+    });
+  }
+
   render()
   {
+    const dragHandlers = {
+      onStart: this.onStart,
+      onStop: this.onStop
+    };
     return (<div className="App">
 
       <header className="App-header">
@@ -68,8 +100,11 @@ class App extends Component
       <p className="App-intro">
         Todo: integrate socket io into project
       </p>
-      <ChatComponent inputText={this.state.inputText} handleChatInputChange={this.handleChatInputChange} sendChat={this.sendChat} messages={this.state.messages} />
-
+      <Draggable {...dragHandlers} enableUserSelectHack={false}>
+          <div>
+            <ChatComponent inputText={this.state.inputText} handleChatInputChange={this.handleChatInputChange} sendChat={this.sendChat} messages={this.state.messages} />
+          </div>
+      </Draggable>
     </div>);
   }
 }

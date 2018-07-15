@@ -29,7 +29,7 @@ class ChatComponent extends Component
         </div>
           <form className="chat-input-box" onSubmit={this.props.sendChat}>
             <input value={this.props.inputText} onChange={this.props.handleChatInputChange} type="text" id="chat-text-input" name="inputText" autoComplete="off"/>
-            <button type="submit" onClick={this.props.sendChat} className="btn btn-md">send</button>
+            <button type="submit" onClick={this.props.sendChat} className="btn btn-md btn-primary">send</button>
           </form>
       </div>
     )
