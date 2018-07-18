@@ -3,6 +3,7 @@ import React,
   Component
 }
 from "react";
+import './ChatComponent.css';
 
 class ChatComponent extends Component
 {

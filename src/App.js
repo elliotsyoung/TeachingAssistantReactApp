@@ -4,31 +4,37 @@ import React,
 }
 from 'react';
 import './App.css';
-import ChatComponent from './components/ChatComponent.js';
-import openSocket from 'socket.io-client';
-import Draggable,
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
+import
 {
-  DraggableCore
+  Responsive,
+  WidthProvider
 }
-from 'react-draggable'; // Both at the same time
+from 'react-grid-layout';
+import ChatComponent from './components/ChatComponent.js';
+import QuickCommands from './components/QuickCommands.js';
+import QuickCommandsList from './components/QuickCommandsList.js';
+import openSocket from 'socket.io-client';
 const socket = openSocket('https://fusionpaloalto.elliotsyoung.com');
+const ResponsiveGridLayout = WidthProvider(Responsive);
 class App extends Component
 {
   constructor(props)
   {
     super(props)
-    console.log("Hello World!");
     this.sendChat = this.sendChat.bind(this);
     this.handleChatInputChange = this.handleChatInputChange.bind(this);
     this.onStart = this.onStart.bind(this)
     this.onStop = this.onStop.bind(this)
 
     this.state = {
-      messages: ["Hello There", "Welcome to the app!", "this is the third message"],
+      messages: [
+        "Hello There", "Welcome to the app!"
+      ],
       inputText: "",
       activeDrags: 0
     }
-
     // Socket Setup
     socket.emit("subscribe",
     {
@@ -47,7 +53,6 @@ class App extends Component
         ChatBox.scrollTop = ChatBox.scrollHeight;
       })
     })
-
 
   }
   sendChat(event)
@@ -72,39 +77,56 @@ class App extends Component
   // DRAG HANDLERS
   onStart()
   {
+    var aDrag = this.state.activeDrags;
+    aDrag++;
     this.setState(
     {
-      activeDrags: ++this.state.activeDrags
+      activeDrags: aDrag
     });
   }
 
   onStop()
   {
+    var aDrag = this.state.activeDrags;
+    aDrag--;
     this.setState(
     {
-      activeDrags: --this.state.activeDrags
+      activeDrags: aDrag
     });
   }
 
   render()
   {
-    const dragHandlers = {
-      onStart: this.onStart,
-      onStop: this.onStop
-    };
+    var layouts = [
+    {
+      i: 'a',
+      x: 4,
+      y: 0,
+      w: 4,
+      h: 2
+    },
+    {
+      i: 'b',
+      x: 4,
+      y: 0,
+      w: 4,
+      h: 2
+    }];
     return (<div className="App">
-
       <header className="App-header">
-        <h1 className="App-title">BASIC CHAT CLIENT</h1>
+        <h1 className="App-title">Teaching Assistant App</h1>
       </header>
-      <p className="App-intro">
-        Todo: integrate socket io into project
-      </p>
-      <Draggable {...dragHandlers} enableUserSelectHack={false}>
-          <div>
-            <ChatComponent inputText={this.state.inputText} handleChatInputChange={this.handleChatInputChange} sendChat={this.sendChat} messages={this.state.messages} />
-          </div>
-      </Draggable>
+      <p className="App-intro"></p>
+      <ResponsiveGridLayout className="layout" layouts={layouts} draggableCancel="input,textarea">
+        <div key="a">
+          <ChatComponent inputText={this.state.inputText} handleChatInputChange={this.handleChatInputChange} sendChat={this.sendChat} messages={this.state.messages}/>
+        </div>
+        <div key="b">
+          <QuickCommandsList/>
+          <br/>
+          <QuickCommands/>
+        </div>
+      </ResponsiveGridLayout>
     </div>);
   }
 }
